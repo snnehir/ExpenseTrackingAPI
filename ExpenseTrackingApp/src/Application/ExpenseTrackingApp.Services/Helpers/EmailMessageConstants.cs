@@ -21,6 +21,10 @@ namespace ExpenseTrackingApp.Services.Helpers
 			return $"<p>Hello {name} {lastName}</p><br><p>Welcome to the ExpenseTrackingApp App</p><br>";
 		}
 
-		
+		public static string GetDailyMailBody(string text)
+		{
+			return $"<p>Hello! Your daily expenses mailed!</p> </br> {text}";
+		}
+
 	}
 }

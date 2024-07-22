@@ -12,5 +12,8 @@ namespace ExpenseTrackingApp.Services.Services.Mail
 	public interface IEmailService
 	{
 		Task<BaseResponseModel<EmailResponse>> SendRegisterEmailWithPassword(string name, string lastName, string email, string password);
+
+		Task<BaseResponseModel<EmailResponse>> SendDailyExpenseMail(IList<DailyExpenseDto> expenses, string email);
+
 	}
 }

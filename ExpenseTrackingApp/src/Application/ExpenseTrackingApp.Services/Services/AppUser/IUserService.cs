@@ -7,6 +7,6 @@
         Task CreateAsync(User user);
         Task<int> GetCurrentUserId();
 
-		Task<IList<IGrouping<DateTime, Expense>>> GetDaily(int id);
+		Task<UserExpensesResponse> GetUserExpenses(int id);
     }
 }

@@ -6,6 +6,8 @@ using ExpenseTrackingApp.Services.Helpers;
 using System.Net.Mail;
 using ExpenseTrackingApp.DataTransferObjects.Responses;
 using Hangfire;
+using System.Xml.Linq;
+using System.Text;
 
 
 namespace ExpenseTrackingApp.Services.Services.Mail
@@ -29,7 +31,31 @@ namespace ExpenseTrackingApp.Services.Services.Mail
 			return BaseResponseModel<EmailResponse>.Success();
 
 		}
+		public async Task<BaseResponseModel<EmailResponse>> SendDailyExpenseMail(IList<DailyExpenseDto> expenses, string email)
+		{
+			var sb = new StringBuilder();
 
+			foreach (var dailyExpense in expenses)
+			{
+				sb.AppendLine($"Date: {dailyExpense.Date}");
+				sb.AppendLine("Expenses:");
+
+				foreach (var expense in dailyExpense.Expenses)
+				{
+					sb.AppendLine($"  - Amount: {expense.Amount:C}, Description: {expense.Description}, Date: {expense.Created:dd MMMM yyyy}");
+				}
+
+				sb.AppendLine();
+			}
+			var text = sb.ToString();
+			await SendEmail(new EmailMessage(new[] { email }, EmailMessageConstants.RegisterTitle, EmailMessageConstants.RegisterSubject,
+				EmailMessageConstants.GetDailyMailBody(text)));
+
+
+			return BaseResponseModel<EmailResponse>.Success();
+		}
+
+		
 		private async Task SendEmail(EmailMessage message)
 		{
 			var emailMessage = CreateEmailMessage(message);

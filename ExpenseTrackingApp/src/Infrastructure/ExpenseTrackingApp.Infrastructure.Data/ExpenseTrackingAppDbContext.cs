@@ -6,6 +6,7 @@ namespace ExpenseTrackingApp.Infrastructure.Data
 	public class ExpenseTrackingAppDbContext: DbContext
 	{
 		public DbSet<User> Users { get; set; }
+
 		public DbSet<Expense> Expenses { get; set; }
 
 		public ExpenseTrackingAppDbContext(DbContextOptions<ExpenseTrackingAppDbContext> options) : base(options)
@@ -15,7 +16,6 @@ namespace ExpenseTrackingApp.Infrastructure.Data
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-
 			modelBuilder.Entity<Expense>().HasOne(e => e.User)
 										   .WithMany(u => u.Expenses)
 										   .HasForeignKey(e => e.UserId);

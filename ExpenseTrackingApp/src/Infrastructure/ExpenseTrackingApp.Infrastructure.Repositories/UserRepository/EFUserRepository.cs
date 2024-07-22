@@ -1,4 +1,5 @@
 ﻿using ExpenseTrackingApp.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace ExpenseTrackingApp.Infrastructure.Repositories.UserRepository
 {
@@ -9,10 +10,11 @@ namespace ExpenseTrackingApp.Infrastructure.Repositories.UserRepository
         {
             _dbContext = dbContext;
         }
+
         public async Task CreateAsync(User entity)
         {
             await _dbContext.Users.AddAsync(entity);
-            await _dbContext.SaveChangesAsync();
+			await _dbContext.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)
@@ -26,12 +28,17 @@ namespace ExpenseTrackingApp.Infrastructure.Repositories.UserRepository
 
         public async Task<User?> GetByIdAsync(int id) => await _dbContext.Users.SingleOrDefaultAsync(u => u.Id == id);
 
-        public async Task<User?> GetUserByEmailAsync(string email)
+		public async Task<User?> GetUserByEmailAsync(string email)
         {
             return await _dbContext.Users.SingleOrDefaultAsync(u => u.Email.Equals(email));
         }
 
-		public async Task<IList<Expense>> GetUserExpensesAsync2(int id)
+		public async Task<IList<Expense>> GetUserExpensesAsync(int id)
+		{
+			return await _dbContext.Expenses.Where(e => e.UserId == id).ToListAsync();
+		}
+
+		public async Task<IEnumerable<Expense>> GetUserExpensesDaily(int id)
 		{
 
 			var groupedExpenses = await _dbContext.Expenses
@@ -50,22 +57,27 @@ namespace ExpenseTrackingApp.Infrastructure.Repositories.UserRepository
 			return expenses;
 		}
 
-		public async Task<IList<IGrouping<DateTime, Expense>>> GetUserExpensesAsync(int id)
+		public async Task<decimal> GetUserTotalExpenses(int id)
 		{
-			var groupedExpenses = await _dbContext.Expenses
-				.Where(n => n.UserId == id) // Assuming you're grouping by UserId, not by Expense Id
-				.GroupBy(d => new DateTime(d.Created.Year, d.Created.Month, d.Created.Day))
-				.ToListAsync();
+			var expenses = await _dbContext.Expenses.Where(e => e.UserId == id).ToListAsync();
+			var totalAmount = expenses.Sum(e => e.Amount);
 
-			return groupedExpenses;
+			return  totalAmount;
 		}
 
-		public async Task<IList<Expense>> GetUserDailyExpensesAsync(int id)
+		/*public async Task<IList<Expense>> GetUserDailyExpensesAsync(int id)
+		{
+			var x = await _dbContext.Expenses.Where(n => n.Id == id).ToListAsync();
+			
+            return x;
+		}*/
+
+		/*public async Task<IList<Expense>> GetUserDailyExpensesAsync(int id)
 		{
 			// return await _dbContext.Expenses.Where(n => n.Id == id).ToListAsync();
 			var x = await _dbContext.Expenses.Where(n => n.Id == id).GroupBy(d => new { d.Created.Year, d.Created.Month, d.Created.Day }).SelectMany(a => a).ToListAsync();
-            return x;
-		}
+			return x;
+		}*/
 
 		public async Task UpdateAsync(User entity)
         {

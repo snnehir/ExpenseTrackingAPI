@@ -67,8 +67,8 @@ namespace ExpenseTrackingApp.Services.Services.Auth
             await _userService.CreateAsync(user);
 
 
-            ScheduleService.ScheduleSendRegisterEmailWithPassword(user.FirstName, user.LastName,
-				user.Email, user.PasswordHash);
+            /*ScheduleService.ScheduleSendRegisterEmailWithPassword(user.FirstName, user.LastName,
+				user.Email, user.PasswordHash); */
 
   
 

@@ -4,6 +4,7 @@ using ExpenseTrackingApp.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ExpenseTrackingApp.WebAPI.Migrations
 {
     [DbContext(typeof(ExpenseTrackingAppDbContext))]
-    partial class ExpenseTrackingAppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240722075300_CustomerEntity")]
+    partial class CustomerEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +24,33 @@ namespace ExpenseTrackingApp.WebAPI.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("ExpenseTrackingApp.Entities.Customer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Customers");
+                });
 
             modelBuilder.Entity("ExpenseTrackingApp.Entities.Expense", b =>
                 {
@@ -84,6 +114,17 @@ namespace ExpenseTrackingApp.WebAPI.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("ExpenseTrackingApp.Entities.Customer", b =>
+                {
+                    b.HasOne("ExpenseTrackingApp.Entities.User", "User")
+                        .WithOne("Customer")
+                        .HasForeignKey("ExpenseTrackingApp.Entities.Customer", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("ExpenseTrackingApp.Entities.Expense", b =>
                 {
                     b.HasOne("ExpenseTrackingApp.Entities.User", "User")
@@ -97,6 +138,8 @@ namespace ExpenseTrackingApp.WebAPI.Migrations
 
             modelBuilder.Entity("ExpenseTrackingApp.Entities.User", b =>
                 {
+                    b.Navigation("Customer");
+
                     b.Navigation("Expenses");
                 });
 #pragma warning restore 612, 618

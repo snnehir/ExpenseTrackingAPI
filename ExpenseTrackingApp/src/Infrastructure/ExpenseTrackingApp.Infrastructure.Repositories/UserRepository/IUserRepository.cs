@@ -7,7 +7,7 @@
         // get expenses
         Task<User?> GetUserByEmailAsync(string email);
 
-		//Task<IList<Expense>> GetUserExpensesAsync(int id);
-		Task<IList<IGrouping<DateTime, Expense>>> GetUserExpensesAsync(int id);
+		Task<IList<Expense>> GetUserExpensesAsync(int id);
+		Task<decimal> GetUserTotalExpenses(int id);
 	}
 }

@@ -1,5 +1,9 @@
 ﻿// using Mapster;
 
+using ExpenseTrackingApp.Infrastructure.Repositories.ExpenseRepository;
+using ExpenseTrackingApp.Infrastructure.Repositories.HelperModels;
+using ExpenseTrackingApp.Services.Services.ExpenseService;
+
 namespace ExpenseTrackingApp.WebAPI.Extensions
 {
     public static class ServiceColllectionExtensions
@@ -9,6 +13,8 @@ namespace ExpenseTrackingApp.WebAPI.Extensions
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserRepository, EFUserRepository>();
+			services.AddScoped<IExpenseService, ExpenseService>();
+			services.AddScoped<IExpenseRepository, EFExpenseRepository>();
 			services.AddScoped<IEmailService, EmailService>();
 			return services;
         }
@@ -105,7 +111,10 @@ namespace ExpenseTrackingApp.WebAPI.Extensions
         }
         public static void MapsterConfigurations(this IServiceCollection services)
         {
-            TypeAdapterConfig.GlobalSettings.Scan(Assembly.GetExecutingAssembly());
+			TypeAdapterConfig<DailyExpenseData, DailyExpenseDto>
+				.NewConfig().Map(dest => dest.Expenses, src => src.Expenses);
+
+			TypeAdapterConfig.GlobalSettings.Scan(Assembly.GetExecutingAssembly());
         }
     }
 }

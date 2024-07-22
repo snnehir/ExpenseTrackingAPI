@@ -131,11 +131,11 @@ namespace ExpenseTrackingApp.WebAPI.Controllers
             await _cache.SetAsync(accessToken, refreshTokenByteArray, options);
         }
 
-		[HttpGet("daily")]
-        [Authorize]
+		[HttpGet("expenses")]
+        //[Authorize]
 		public async Task<IActionResult> Daily([FromQuery] int userId)
 		{
-			var result = await _userService.GetDaily(userId);
+			var result = await _userService.GetUserExpenses(userId);
 			
 			return Ok(result);
 

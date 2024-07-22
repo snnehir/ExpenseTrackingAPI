@@ -34,9 +34,12 @@ namespace ExpenseTrackingApp.Services.Services.AppUser
             return userId;
         }
 
-		public async Task<IList<IGrouping<DateTime, Expense>>> GetDaily(int id)
+		public async Task<UserExpensesResponse> GetUserExpenses(int id)
 		{
-            return await _userRepository.GetUserExpensesAsync(id);
+            var data = await _userRepository.GetUserTotalExpenses(id);
+            var userExpenseDto = new UserExpensesResponse { TotalExpenses = data};
+			return userExpenseDto;
+
 		}
 	}
 }
