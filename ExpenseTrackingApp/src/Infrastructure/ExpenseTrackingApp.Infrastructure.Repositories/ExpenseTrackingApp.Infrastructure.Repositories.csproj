@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Domains\ExpenseTrackingApp.Entities\ExpenseTrackingApp.Entities.csproj" />
+    <ProjectReference Include="..\ExpenseTrackingApp.Infrastructure.Data\ExpenseTrackingApp.Infrastructure.Data.csproj" />
+  </ItemGroup>
+
+</Project>
