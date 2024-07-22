@@ -12,6 +12,6 @@ public class ScheduleService
 	// TODO: create job id and save in other table to make unsubscripe operations...
 	public static void ScheduleExpenseSubscription(DailyExpenseDto expenses, string email)
 	{
-		RecurringJob.AddOrUpdate<IEmailService>("job-id-1", x => x.SendDailyExpenseMail(expenses, email), Cron.Minutely);
+		RecurringJob.AddOrUpdate<IEmailService>("job-id-1", x => x.SendDailyExpenseMail(expenses, email), Cron.Daily);
 	}
 }
