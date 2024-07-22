@@ -9,6 +9,7 @@ public class ScheduleService
 	{
 		BackgroundJob.Schedule<IEmailService>(x => x.SendRegisterEmailWithPassword(name, lastName, email, password), TimeSpan.FromMinutes(1));
 	}
+	// Recurring Job => Cron Daily !!!!
 	public static void ScheduleExpenseSubscription(IList<DailyExpenseDto> expenses, string email)
 	{
 		BackgroundJob.Schedule<IEmailService>(x => x.SendDailyExpenseMail(expenses, email), TimeSpan.FromMinutes(1));

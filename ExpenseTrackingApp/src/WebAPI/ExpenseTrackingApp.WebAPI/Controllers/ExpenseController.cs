@@ -25,7 +25,6 @@ namespace ExpenseTrackingApp.WebAPI.Controllers
 
 
 		[HttpGet("daily")]
-		[Authorize]
 		public async Task<IActionResult> Daily([FromQuery] int userId)
 		{
 
@@ -35,8 +34,7 @@ namespace ExpenseTrackingApp.WebAPI.Controllers
 
 		}
 
-		[HttpGet("weekly")]
-		//[Authorize]
+		[HttpGet("weekly")]		
 		public async Task<IActionResult> Weekly([FromQuery] int userId)
 		{
 			var result = await _expenseService.GetWeeklyExpensesAsync(userId);

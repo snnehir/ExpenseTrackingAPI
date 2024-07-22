@@ -132,7 +132,7 @@ namespace ExpenseTrackingApp.WebAPI.Controllers
         }
 
 		[HttpGet("expenses")]
-        //[Authorize]
+        [Authorize]
 		public async Task<IActionResult> Daily([FromQuery] int userId)
 		{
 			var result = await _userService.GetUserExpenses(userId);
