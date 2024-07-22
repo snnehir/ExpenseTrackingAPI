@@ -21,10 +21,10 @@ namespace ExpenseTrackingApp.WebAPI.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] UserSignUpRequest request)
         {
-            var result = await _authService.SignUp(request);
+			//throw new Exception("exception example");
+			var result = await _authService.SignUp(request);
             if(result.Succeeded)
             {
-                //return Created("ok", result.Data);
                 return new ObjectResult(result) { StatusCode = StatusCodes.Status201Created };
             }
             return BadRequest(result);   
