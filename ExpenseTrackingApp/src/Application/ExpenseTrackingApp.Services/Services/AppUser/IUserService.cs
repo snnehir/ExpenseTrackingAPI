@@ -5,8 +5,9 @@
         Task<bool> CheckUserExistById(int id);
         Task<User?> GetUserByEmail(string email);
         Task CreateAsync(User user);
-        Task<int> GetCurrentUserId();
+        Task<BaseResponseModel<int>> GetCurrentUserId();
 
-		Task<UserExpensesResponse> GetUserExpenses(int id);
-    }
+        Task<BaseResponseModel<UserExpensesResponse>> GetUserExpenses();
+
+	}
 }

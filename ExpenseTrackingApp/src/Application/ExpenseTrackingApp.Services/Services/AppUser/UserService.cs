@@ -28,17 +28,29 @@ namespace ExpenseTrackingApp.Services.Services.AppUser
             return await _userRepository.GetUserByEmailAsync(email);
         }
 
-        public async Task<int> GetCurrentUserId()
+        public async Task<BaseResponseModel<int>> GetCurrentUserId()
         {
-            var userId = int.Parse(_httpContextAccessor.HttpContext.User.Claims.First(i => i.Type == "UserId").Value);
-            return userId;
-        }
+			var _userId = _httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
+			if (_userId == null)
+			{
+				return BaseResponseModel<int>.Fail(ConstantMessages.UserNotFound);
+			}
+			var userId = int.Parse(_userId);
+			return BaseResponseModel<int>.Success(userId);
+		}
 
-		public async Task<UserExpensesResponse> GetUserExpenses(int id)
+		public async Task<BaseResponseModel<UserExpensesResponse>> GetUserExpenses()
 		{
-            var data = await _userRepository.GetUserTotalExpenses(id);
-            var userExpenseDto = new UserExpensesResponse { TotalExpenses = data};
-			return userExpenseDto;
+			var userIdResponse = await GetCurrentUserId();
+			if (userIdResponse.Succeeded)
+			{
+				var data = await _userRepository.GetUserTotalExpenses(userIdResponse.Data);
+				var userExpenseDto = new UserExpensesResponse { TotalExpenses = data };
+				return BaseResponseModel<UserExpensesResponse>.Success(userExpenseDto);
+
+			}
+			return BaseResponseModel<UserExpensesResponse>.Fail(ConstantMessages.UserNotFound);
+			
 
 		}
 	}

@@ -15,6 +15,8 @@ namespace ExpenseTrackingApp.Infrastructure.Repositories.ExpenseRepository
 
 		Task<IList<MonthlyExpenseData>> GetMonthlyExpensesAsync(int id);
 
+		Task<DailyExpenseData> GetCurrentDayExpenseAsync(int id);
+
 
 	}
 }

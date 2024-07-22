@@ -133,9 +133,9 @@ namespace ExpenseTrackingApp.WebAPI.Controllers
 
 		[HttpGet("expenses")]
         [Authorize]
-		public async Task<IActionResult> Daily([FromQuery] int userId)
+		public async Task<IActionResult> UserExpenses()
 		{
-			var result = await _userService.GetUserExpenses(userId);
+			var result = await _userService.GetUserExpenses();
 			
 			return Ok(result);
 

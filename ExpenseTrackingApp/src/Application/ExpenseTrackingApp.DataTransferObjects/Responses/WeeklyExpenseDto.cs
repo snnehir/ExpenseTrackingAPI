@@ -9,6 +9,6 @@ namespace ExpenseTrackingApp.DataTransferObjects.Responses
 	public class WeeklyExpenseDto
 	{
 		public IList<UserExpense> Expenses { get; set; }
-		public string Date { get; set; }
+		public string Week { get; set; }
 	}
 }

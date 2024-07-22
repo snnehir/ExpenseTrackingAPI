@@ -31,24 +31,22 @@ namespace ExpenseTrackingApp.Services.Services.Mail
 			return BaseResponseModel<EmailResponse>.Success();
 
 		}
-		public async Task<BaseResponseModel<EmailResponse>> SendDailyExpenseMail(IList<DailyExpenseDto> expenses, string email)
+		public async Task<BaseResponseModel<EmailResponse>> SendDailyExpenseMail(DailyExpenseDto dailyExpense, string email)
 		{
 			var sb = new StringBuilder();
 
-			foreach (var dailyExpense in expenses)
+			sb.AppendLine($"<p><strong> Day: {dailyExpense.Day}</strong></p>");
+			sb.AppendLine("<p>Expenses:</p> <ul>");
+
+			foreach (var expense in dailyExpense.Expenses)
 			{
-				sb.AppendLine($"Date: {dailyExpense.Date}");
-				sb.AppendLine("Expenses:");
-
-				foreach (var expense in dailyExpense.Expenses)
-				{
-					sb.AppendLine($"  - Amount: {expense.Amount:C}, Description: {expense.Description}, Date: {expense.Created:dd MMMM yyyy}");
-				}
-
-				sb.AppendLine();
+				sb.AppendLine($"<li> Amount: {expense.Amount:C}, Description: {expense.Description} </li>");
 			}
+
+			sb.AppendLine("</ul> </br>");
+			sb.AppendLine("");
 			var text = sb.ToString();
-			await SendEmail(new EmailMessage(new[] { email }, EmailMessageConstants.RegisterTitle, EmailMessageConstants.RegisterSubject,
+			await SendEmail(new EmailMessage(new[] { email }, EmailMessageConstants.DailyExpensesTitle, EmailMessageConstants.DailyExpensesSubject,
 				EmailMessageConstants.GetDailyMailBody(text)));
 
 

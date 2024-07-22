@@ -9,6 +9,6 @@ namespace ExpenseTrackingApp.DataTransferObjects.Responses
 	public class DailyExpenseDto
 	{
 		public IList<UserExpense> Expenses { get; set; }
-		public DateTime Date { get; set; }
+		public string Day { get; set; }
 	}
 }

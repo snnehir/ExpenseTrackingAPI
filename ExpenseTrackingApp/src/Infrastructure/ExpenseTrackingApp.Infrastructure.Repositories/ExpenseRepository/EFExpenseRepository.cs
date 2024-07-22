@@ -26,6 +26,18 @@ namespace ExpenseTrackingApp.Infrastructure.Repositories.ExpenseRepository
 			return await _dbContext.Expenses.AsNoTracking().ToListAsync();
 		}
 
+		public async Task<DailyExpenseData> GetCurrentDayExpenseAsync(int id)
+		{
+			var today = DateTime.Now.Date;
+			var filteredExpenses = await _dbContext.Expenses.Where(n => n.UserId == id && n.Created.Date == today).ToListAsync();
+			var expense = new DailyExpenseData
+			{
+				Expenses = filteredExpenses,
+				Date = DateTime.Now
+			};
+			return expense;
+		}
+
 		public async Task<IList<DailyExpenseData>> GetDailyExpensesAsync(int id)
 		{
 			var groupedExpenses = await _dbContext.Expenses

@@ -25,38 +25,37 @@ namespace ExpenseTrackingApp.WebAPI.Controllers
 
 
 		[HttpGet("daily")]
-		public async Task<IActionResult> Daily([FromQuery] int userId)
+		public async Task<IActionResult> Daily()
 		{
-
-            var result = await _expenseService.GetDailyExpensesAsync(userId);
+			var result = await _expenseService.GetDailyExpensesAsync();
 
 			return Ok(result);
 
 		}
 
 		[HttpGet("weekly")]		
-		public async Task<IActionResult> Weekly([FromQuery] int userId)
+		public async Task<IActionResult> Weekly( )
 		{
-			var result = await _expenseService.GetWeeklyExpensesAsync(userId);
+			var result = await _expenseService.GetWeeklyExpensesAsync();
 
 			return Ok(result);
 
 		}
 
 		[HttpGet("monthly")]
-		public async Task<IActionResult> Monthly([FromQuery] int userId)
+		public async Task<IActionResult> Monthly( )
 		{
-			var result = await _expenseService.GetMonthlyExpensesAsync(userId);
+			var result = await _expenseService.GetMonthlyExpensesAsync();
 
 			return Ok(result);
 
 		}
 
 		[HttpGet("subscription/daily")]
-		public async Task<IActionResult> Subscription([FromQuery] int userId)
+		public async Task<IActionResult> Subscription( )
 		{
 			// Burası nedense çalışmıyor
-			await _expenseService.SubscribeToDaily(userId, "snnehir21@gmail.com");
+			await _expenseService.SubscribeToDaily();
 
 			return Ok();
 

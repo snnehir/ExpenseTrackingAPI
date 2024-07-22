@@ -112,7 +112,10 @@ namespace ExpenseTrackingApp.WebAPI.Extensions
         public static void MapsterConfigurations(this IServiceCollection services)
         {
 			TypeAdapterConfig<DailyExpenseData, DailyExpenseDto>
-				.NewConfig().Map(dest => dest.Expenses, src => src.Expenses);
+				.NewConfig().Map(dest => dest.Day, src => src.Date.ToString("M"));
+
+			TypeAdapterConfig<WeeklyExpenseData, WeeklyExpenseDto>
+				.NewConfig().Map(dest => dest.Week, src => src.Date);
 
 			TypeAdapterConfig.GlobalSettings.Scan(Assembly.GetExecutingAssembly());
         }

@@ -10,6 +10,8 @@ namespace ExpenseTrackingApp.Services.Helpers
 	{
 		public const string RegisterTitle = "You are successfuly registered Expense Tracking App";
 		public const string RegisterSubject = "You are successfuly registered Expense Tracking App";
+		public const string DailyExpensesTitle = "Your Daily Expenses Report Is Ready";
+		public const string DailyExpensesSubject = "Daily Expenses";
 
 		public static string GetRegisterBody(string name)
 		{

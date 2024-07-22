@@ -9,13 +9,13 @@ namespace ExpenseTrackingApp.Services.Services.ExpenseService
 {
 	public interface IExpenseService
 	{
-		public Task<IList<DailyExpenseDto>> GetDailyExpensesAsync(int id);
+		Task<BaseResponseModel<IList<DailyExpenseDto>>> GetDailyExpensesAsync();
 
-		Task<IList<WeeklyExpenseDto>> GetWeeklyExpensesAsync(int id);
+		Task<BaseResponseModel<IList<WeeklyExpenseDto>>> GetWeeklyExpensesAsync();
 
-		Task<IList<MonthlyExpenseDto>> GetMonthlyExpensesAsync(int id);
+		Task<BaseResponseModel<IList<MonthlyExpenseDto>>> GetMonthlyExpensesAsync();
 
-		Task SubscribeToDaily(int id, string email);
+		Task SubscribeToDaily();
 
 		Task CreateExpense(CreateExpenseRequest request);
 	}

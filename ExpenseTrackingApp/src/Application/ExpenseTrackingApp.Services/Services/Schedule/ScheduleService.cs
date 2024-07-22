@@ -9,9 +9,9 @@ public class ScheduleService
 	{
 		BackgroundJob.Schedule<IEmailService>(x => x.SendRegisterEmailWithPassword(name, lastName, email, password), TimeSpan.FromMinutes(1));
 	}
-	// Recurring Job => Cron Daily !!!!
-	public static void ScheduleExpenseSubscription(IList<DailyExpenseDto> expenses, string email)
+	// TODO: create job id and save in other table to make unsubscripe operations...
+	public static void ScheduleExpenseSubscription(DailyExpenseDto expenses, string email)
 	{
-		BackgroundJob.Schedule<IEmailService>(x => x.SendDailyExpenseMail(expenses, email), TimeSpan.FromMinutes(1));
+		RecurringJob.AddOrUpdate<IEmailService>("job-id-1", x => x.SendDailyExpenseMail(expenses, email), Cron.Minutely);
 	}
 }

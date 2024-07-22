@@ -13,7 +13,7 @@ namespace ExpenseTrackingApp.Services.Services.Mail
 	{
 		Task<BaseResponseModel<EmailResponse>> SendRegisterEmailWithPassword(string name, string lastName, string email, string password);
 
-		Task<BaseResponseModel<EmailResponse>> SendDailyExpenseMail(IList<DailyExpenseDto> expenses, string email);
+		Task<BaseResponseModel<EmailResponse>> SendDailyExpenseMail(DailyExpenseDto dailyExpense, string email);
 
 	}
 }
