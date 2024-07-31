@@ -53,5 +53,21 @@ namespace ExpenseTrackingApp.Services.Services.AppUser
 			
 
 		}
+
+		// Dummy service action for testing transaction => Decrease user's expense count when an expense is deleted
+		public async Task<BaseResponseModel<bool>> DecreaseUserExpenseCount(int userId)
+		{
+			
+			var user = await _userRepository.GetByIdAsync(userId);
+			if(user == null)
+				return BaseResponseModel<bool>.Fail(ConstantMessages.UserNotFound);
+
+			user.ExpenseCount = user.ExpenseCount > 0 ? user.ExpenseCount - 1 : 0;
+			await _userRepository.UpdateAsync(user);
+
+			return BaseResponseModel<bool>.Success();
+
+		}
+
 	}
 }

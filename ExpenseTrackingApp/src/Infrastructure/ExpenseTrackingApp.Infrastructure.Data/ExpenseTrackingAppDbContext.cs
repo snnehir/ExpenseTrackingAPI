@@ -22,6 +22,8 @@ namespace ExpenseTrackingApp.Infrastructure.Data
 
 			modelBuilder.Entity<Expense>().Property(e => e.Amount).HasColumnType("decimal(10,2)");
 
+			modelBuilder.Entity<User>().Property(x => x.ExpenseCount).HasDefaultValue(0);
+
 			modelBuilder.Entity<Expense>().Property(x => x.Created).HasDefaultValueSql("getdate()");
 			modelBuilder.Entity<User>().HasIndex(x => x.Email).IsUnique();
 		}

@@ -1,9 +1,11 @@
-﻿using ExpenseTrackingApp.Infrastructure.Repositories.HelperModels;
+﻿using ExpenseTrackingApp.Entities;
+using ExpenseTrackingApp.Infrastructure.Repositories.HelperModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace ExpenseTrackingApp.Infrastructure.Repositories.ExpenseRepository
 {
@@ -18,6 +20,24 @@ namespace ExpenseTrackingApp.Infrastructure.Repositories.ExpenseRepository
 		public async Task CreateAsync(Expense entity)
 		{
 			await _dbContext.Expenses.AddAsync(entity);
+			await _dbContext.SaveChangesAsync();
+		}
+
+		public async Task DeleteAsync(int id, int userId)
+		{
+			var entityToDelete = await _dbContext.Expenses.FirstOrDefaultAsync(e => e.Id == id && e.UserId == userId);
+			if (entityToDelete == null)
+			{
+				throw new Exception("Expense not found!");
+			}
+			
+			await DeleteAsync(entityToDelete);
+
+		}
+
+		public async Task DeleteAsync(Expense entity)
+		{
+			_dbContext.Expenses.Remove(entity);
 			await _dbContext.SaveChangesAsync();
 		}
 

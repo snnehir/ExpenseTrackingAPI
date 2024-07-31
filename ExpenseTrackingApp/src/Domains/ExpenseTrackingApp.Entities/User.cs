@@ -7,6 +7,7 @@
 		public string PasswordHash { get; set; }
 		public string PasswordSalt { get; set; }
 		public string Role { get; set; }
-		public ICollection<Expense> Expenses { get; set; }
+        public int ExpenseCount { get; set; }
+        public ICollection<Expense> Expenses { get; set; }
 	}
 }

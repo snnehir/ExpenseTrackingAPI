@@ -8,6 +8,7 @@
         Task<BaseResponseModel<int>> GetCurrentUserId();
 
         Task<BaseResponseModel<UserExpensesResponse>> GetUserExpenses();
+		Task<BaseResponseModel<bool>> DecreaseUserExpenseCount(int userId);
 
 	}
 }

@@ -20,11 +20,20 @@ namespace ExpenseTrackingApp.Infrastructure.Repositories.UserRepository
         public async Task DeleteAsync(int id)
         {
             var user = await _dbContext.Users.FindAsync(id);
-            _dbContext.Users.Remove(user);
-            await _dbContext.SaveChangesAsync();
+			if(user == null)
+			{
+				throw new Exception("User not found!");
+			}
+			await DeleteAsync(user);
         }
 
-        public async Task<IList<User>> GetAllAsync() => await _dbContext.Users.AsNoTracking().ToListAsync();
+		public async Task DeleteAsync(User entity)
+		{
+			_dbContext.Users.Remove(entity);
+			await _dbContext.SaveChangesAsync();
+		}
+
+		public async Task<IList<User>> GetAllAsync() => await _dbContext.Users.AsNoTracking().ToListAsync();
 
         public async Task<User?> GetByIdAsync(int id) => await _dbContext.Users.SingleOrDefaultAsync(u => u.Id == id);
 
@@ -79,9 +88,19 @@ namespace ExpenseTrackingApp.Infrastructure.Repositories.UserRepository
 			return x;
 		}*/
 
+
+		// throws exception randomly for testing transaction example
 		public async Task UpdateAsync(User entity)
         {
-            _dbContext.Users.Update(entity);
+			Random random = new Random();
+			int randNum = random.Next(1, 3);
+
+			if(randNum == 1)
+			{
+				throw new Exception("User update exception!");
+			}
+
+			_dbContext.Users.Update(entity);
             await _dbContext.SaveChangesAsync();
         }
     }

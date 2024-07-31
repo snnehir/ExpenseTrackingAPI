@@ -9,6 +9,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace ExpenseTrackingApp.Services.Services.ExpenseService
 {
@@ -100,6 +101,42 @@ namespace ExpenseTrackingApp.Services.Services.ExpenseService
 				}
 			}
 
+		}
+
+
+		// Dummy service action for testing transaction => Delete expense and decrease user's expense count
+		public async Task<BaseResponseModel<bool>> DeleteExpense(int expenseId)
+		{
+			var _userId = _accessor.HttpContext?.User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
+			var email = _accessor.HttpContext?.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+			
+			if (_userId != null && email != null)
+			{
+				try
+				{
+					using (TransactionScope scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+					{
+						int userId = int.Parse(_userId);
+
+						// transaction 1
+						await _expenseRepository.DeleteAsync(expenseId, userId);
+
+						// transaction 2 (if this action cannot be completed, transaction 1 will be cancelled.)
+						await _userService.DecreaseUserExpenseCount(userId);
+
+						scope.Complete();
+						return BaseResponseModel<bool>.Success();	
+					}
+				}
+				catch (Exception e)
+				{
+					return BaseResponseModel<bool>.Fail("Delete expense failed with exception: " + e.Message);
+				}
+				
+
+			}
+
+			return BaseResponseModel<bool>.Fail(ConstantMessages.UserNotFound);
 		}
 
 	}

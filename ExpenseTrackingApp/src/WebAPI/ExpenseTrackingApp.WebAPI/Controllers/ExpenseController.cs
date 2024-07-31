@@ -54,10 +54,19 @@ namespace ExpenseTrackingApp.WebAPI.Controllers
 		[HttpGet("subscription/daily")]
 		public async Task<IActionResult> Subscription( )
 		{
-			// Burası nedense çalışmıyor
 			await _expenseService.SubscribeToDaily();
 
 			return Ok();
+
+		}
+
+		// Dummy controller for testing transaction => Delete expense and decrease user's expense count
+		[HttpDelete("{expenseId}")]
+		public async Task<IActionResult> Delete([FromRoute] int expenseId)
+		{
+			var result = await _expenseService.DeleteExpense(expenseId);
+
+			return Ok(result);
 
 		}
 	}

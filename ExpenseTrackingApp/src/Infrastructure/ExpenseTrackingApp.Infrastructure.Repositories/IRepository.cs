@@ -5,5 +5,6 @@
         Task<IList<T>> GetAllAsync();
         Task CreateAsync(T entity);
         Task UpdateAsync(T entity);
-    }
+        Task DeleteAsync(T entity);
+	}
 }

@@ -18,5 +18,6 @@ namespace ExpenseTrackingApp.Services.Services.ExpenseService
 		Task SubscribeToDaily();
 
 		Task CreateExpense(CreateExpenseRequest request);
+		Task<BaseResponseModel<bool>> DeleteExpense(int expenseId);
 	}
 }
